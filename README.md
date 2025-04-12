@@ -7,25 +7,17 @@
 👨‍🏫 **Profesores**: Spigariol Lucas, Passerini Pablo Nicolás  
 🔗 **Comisión**: K2005  
 
-Este repositorio contiene ejercicios, prácticas, trabajos prácticos y parciales realizados a lo largo de la cursada de **Paradigmas de Programación**, materia correspondiente a la carrera de Ingeniería en Sistemas de Información.
-
 ## Contenido
 
-- Prácticas y resoluciones
-- Ejercicios resueltos
+- Prácticas de Clases
+- Práctica de Parciales
 - Parcial con resolución
-- Proyectos y entregas
+- Trabajos Prácticos Grupales
 
-## Paradigmas abordados
+## Paradigmas abordados / Lenguaje Utilizado
 
-- Paradigma Funcional
-- Paradigma Lógico
-- Paradigma Orientado a Objetos
-
-## Tecnologías y lenguajes utilizados
-
-- Haskell
-- Prolog
-- Wollok
+- Paradigma Funcional / Haskell
+- Paradigma Lógico / Prolog
+- Paradigma Orientado a Objetos / Wollok
 
 ---
