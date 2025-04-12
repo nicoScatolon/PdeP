@@ -1,0 +1,64 @@
+import tomyjerry.*
+
+test "Al inicio, la velocidad máxima de Tom es 10" {
+assert.equals(10, tom.velocidadMaxima())
+
+}
+
+test "Si come a Jerry, la velocidad máxima pasa a ser  15.2" {
+tom.comer(jerry)
+assert.equals(15.2, tom.velocidadMaxima())
+}
+
+test "Si corre 24 metros, entonces su velocidad máxima pasa a ser 14" {
+tom.comer(jerry)
+tom.correr(24)
+assert.equals(14, tom.velocidadMaxima())
+
+}
+
+test "Si come a Nibbles, pasa a tener de velocidad máxima 18.7" {
+tom.comer(jerry)
+tom.correr(24)
+tom.comer(nibbles)
+assert.equals(18.7, tom.velocidadMaxima())
+
+}
+
+test "si jerry cumple años (3 años de edad), y luego tom lo vuelve a comer, pasaría a tener 25.9" {
+tom.comer(jerry)
+tom.correr(24)
+tom.comer(nibbles)
+jerry.crecer()
+tom.comer(jerry)
+assert.equals(25.9, tom.velocidadMaxima())
+
+
+}
+
+test "si corre 38 metros su velocidad pasa a ser 24" {
+tom.comer(jerry)
+tom.correr(24)
+tom.comer(nibbles)
+jerry.crecer()
+tom.comer(jerry)
+tom.correr(38)
+assert.equals(24, tom.velocidadMaxima())
+
+}
+
+// TEST PARTE 2
+test "Al inicio, Tom no puede comer a Jerry si está a 120 metros, tampoco quiere comerlo porque no puede." {
+assert.notThat(tom.puedeComer(120))
+assert.notThat(tom.quiereComer(jerry, 120)) 
+}
+
+test "Tom puede comer a Nibbles está a 96 de distancia, pero no lo va a querer comer" {
+assert.that(tom.puedeComer(96))
+assert.notThat(tom.quiereComer(nibbles, 96))
+}
+
+test "Tom puede comer a Nibbles está a 60 de distancia y también lo va a querer comer " {
+assert.that(tom.puedeComer(60))
+assert.that(tom.quiereComer(nibbles, 60))
+}

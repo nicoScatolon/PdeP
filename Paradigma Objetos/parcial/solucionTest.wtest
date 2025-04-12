@@ -1,0 +1,39 @@
+import solucion.*
+import emociones.*
+
+
+describe "Tests Item 6" {
+
+  test "Si 2 personas forman un grupo, nunca podran vivir un momento de tristeza" {
+    const persona1 = new Persona(edad = 12)
+    const persona2 = new Persona(edad = 14)
+    const grupo = new GrupoPersonas()
+
+    const triste = new Tristeza(intensidad = 100)
+    persona1.agregarEmocion(triste)
+
+    grupo.agregarPersona(persona1)
+    grupo.agregarPersona(persona2)
+
+    const eventoTriste = new Evento(impacto = 10, descripcion = "Triste")
+    grupo.vivirEvento(eventoTriste)
+
+    assert.notThat(triste.puedeLiberarse())
+  }
+
+  test"Si un grupo de dos personas hacen un evento con alegria, y furia, el de furia no se hara."{
+    const persona1 = new Persona(edad = 12)
+    const persona2 = new Persona(edad = 14)
+    const grupo = new GrupoPersonas()
+    const furia =  new Furia()
+    persona1.agregarEmocion(new Alegria(intensidad = 100))
+    persona2.agregarEmocion(furia)
+    grupo.agregarPersona(persona1)
+    grupo.agregarPersona(persona2)
+
+    const evento = new Evento(impacto = 120, descripcion = "Ir al Super")
+    grupo.vivirEvento(evento)
+
+    assert.notThat(furia.puedeLiberarse())
+  }
+}

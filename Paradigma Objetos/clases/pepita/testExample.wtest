@@ -1,0 +1,33 @@
+import example.*
+
+test "Inicio no cansada"{
+	assert.notThat(pepita.estaCansada())
+
+}
+
+test "Si vuela 9 mts, se cansa" {
+	pepita.vola(9)
+	assert.that(pepita.estaCansada())
+}
+// PRUEBA DE MANZANA
+test "Inicial 50 calorias" {
+	assert.equals(50, manzana.energia())
+}
+test "Madura 1 vez, Porcentaje 10,energia 55" {
+	manzana.madura()
+	assert.equals(10, manzana.cuantoMadura())
+	assert.equals(55, manzana.energia())
+}
+test "Madura 10 veces, Porcentaje 100 y calorias 100"{
+	10.times { _ => manzana.madura() }
+	assert.equals(100, manzana.energia())
+	assert.equals(100, manzana.cuantoMadura())
+}
+test "Madura mas de 10, calorias decrece 20" {
+	11.times { _ => manzana.madura() }
+	assert.equals(80, manzana.energia())
+}
+test "Madura mas de 15, no puede ser negativo" {
+	16.times { _ => manzana.madura() }
+	assert.equals(0, manzana.energia())
+}

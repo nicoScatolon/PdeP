@@ -1,0 +1,72 @@
+import wollok.game.*
+import pepita.*
+import ciudades.*
+
+program PepitaGame {
+	game.title("Pepita")
+	game.height(20)
+	game.width(20)
+	game.cellSize(50)
+	game.boardGround("fondo1.jpg")
+	
+	game.addVisual(pepita)
+	game.addVisual(manzana)
+	game.addVisual(milanesa)
+	game.addVisual(avion)
+	game.addVisual(alpiste)
+	game.addVisual(text)
+	game.addVisual(nido)
+	game.addVisual(cordoba)
+	game.addVisual(buenosAires) //MOVIMIENTO DE PEPITA
+	
+	
+	keyboard.right().onPressDo({ pepita.positionDer(pepita.position().right(1)) })
+	keyboard.left().onPressDo({ pepita.positionIzq(pepita.position().left(1)) })
+	keyboard.up().onPressDo({ pepita.position(pepita.moverse(1)) })
+	keyboard.down().onPressDo({ pepita.position(pepita.position().down(1)) })
+	
+	keyboard.v().onPressDo(
+		{ if (game.colliders(pepita).isEmpty()) game.say(pepita, "No hay nada aquí")
+			 else game.colliders(pepita).first().viajar() }
+	) //MENSAJES DE PEPITA
+	
+	
+	keyboard.space().onPressDo(
+		{ game.say(
+				pepita,
+				if (pepita.estaCansada()) "Estoy Cansada, Necesito Comer!!"
+				else "A seguir volando!!"
+			) }
+	)
+	
+	
+	keyboard.c().onPressDo(
+		{ if (game.colliders(pepita).isEmpty()) {
+				game.say(pepita, "No hay nada aquí")
+			} else {
+				pepita.comer(game.colliders(pepita).first())
+				game.colliders(pepita).first().delete()
+				game.say(pepita, "Ñam Ñam")
+			} }
+	) //SI ESTA CANSADA, QUE SE CAIGA
+	
+	
+	game.onTick(
+		2000,
+		"movimiento",
+		{ if (pepita.estaCansada()) pepita.autoPosition(pepita.position().down(1)) }
+	)
+	
+	game.onTick(5000, "Se Mueve", { avion.movete() })
+	game.onTick(5000, "Se Pudre", { manzana.madura() })
+	//game.onTick(500,"Termina el Juego",{pepita.endGame()})
+	
+	
+	game.onCollideDo(pepita, { elemento => elemento.actuar() })
+	game.onCollideDo(avion, { pepita => avion.actuar() })
+	
+	game.showAttributes(pepita) //Debug
+	
+	
+	game.start()
+}

@@ -1,0 +1,39 @@
+1-ValorCiudad:
+añoFundacion < 1800 => valor = 5*(1800-añoFundacion)
+atracciones = False => valor = 2*costoVida
+atracciones = True => 3*costoVida
+
+2-CaracteristicasCiudad
+Atracciones copadas
+Si primeraLetra = Vocal => esCopada
+Si primeraletra =! Vocal => noCopada
+
+Ciudad sobria
+x configurable
+Si sumaLetrasAtracciones >= x => noSobria
+Si sumaLetrasAtracciones < x => sobria
+
+Ciudad Nombre raro
+x tratar que sea configurable
+si cantLetrasNomCiudad < 5 => nombreRaro
+si cantLetrasNomCiudad >= 5 => nombreNormal
+
+3-Eventos
+
+SumarNuevaAtraccion
+costoVida incrementa 20%
+
+Crisis
+costoVida baja 10% ⋀ ultimaAtraccion BORRAR
+
+Remodelar
+agregar New + nombreCiudad
+costoVida incrementa x%
+
+Reevaluacion
+n configurable
+si nombreCiudad = sobria ⋀ sumaLetrasAtracciones >= n => costoVida incrementa 10%
+!= funAnterior => costoVida - 3
+
+4- TransformacionNoPara
+remodelacion + crisis + reevaluacion

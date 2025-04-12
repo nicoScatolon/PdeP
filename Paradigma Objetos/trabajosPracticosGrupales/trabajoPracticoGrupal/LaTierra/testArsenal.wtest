@@ -1,0 +1,59 @@
+import guerreros.*
+import arsenal.*
+
+//PARTE 1//
+test "Poder de Gandalf con toda la vida y todas sus armas"{
+    assert.equals(gandalf.poder(), 2800)
+}
+
+test "Poder de Gandalf sin armas y con 80 de vida"{
+    gandalf.armas().clear()
+    gandalf.vida(80)
+    assert.equals(gandalf.poder(), 1200)
+}
+
+test "Poder de Gandalf con 5 de vida y su báculo"{
+    gandalf.armas().clear()
+    gandalf.agregarArma(baculo)
+    gandalf.vida(5)
+    assert.equals(gandalf.poder(), 2300)
+}
+ 
+test "Poder de Gandalf con 30 de vida, su báculo y su espada pero versión enana"{
+    glamdring.nuevoOrigen(new Enano(factorPoder = 2))
+    gandalf.vida(30)
+    assert.equals(gandalf.poder(), 1650)
+}
+
+//PARTE 2//
+test "Espada con multiplicador de 15 y llevada Enano"{
+    const espadaTest = new Espada(
+        multiplicadorDePoder = 15,
+        portador = new Enano(factorPoder = 2))
+    assert.equals(espadaTest.poderOtorgado(), 300)
+}
+
+test "Hacha con mango de 50 cm, con una hoja de 5kg"{
+    const hachaTest = new Hacha(
+        longitudMango = 50,
+        pesoHoja = 5)
+    assert.equals(hachaTest.poderOtorgado(), 250)
+}
+ 
+//Otro test adicional a los propuestos:
+test "Daga con multiplicador 20 y de origen elfico"{
+    const dagaTest = new Daga(
+        multiplicadorDePoder = 20,
+        portador = new Elfo(destrezaPropia = 5))
+    assert.equals(dagaTest.poderOtorgado(), 250)
+}
+
+test "Con un origen distinto, con un multiplicador de 5 y tiene 2 armas, el poder otorgado es 100"{
+    const pepe = new Hobbit(vida = 100, armas = [new Hacha(longitudMango = 50, pesoHoja = 5)])
+    const espadaTest = new Espada(
+        multiplicadorDePoder = 5,
+        portador = pepe)
+    pepe.agregarArma(espadaTest)
+    assert.equals(espadaTest.poderOtorgado(), 100)
+  
+} 

@@ -1,0 +1,144 @@
+import guerreros.*
+import zonas.*
+import arsenal.*
+
+test "Gandalf full vida y con sus armas, puede atravesar Lebennin"{
+    assert.that(lebennin.puedePasar(gandalf))
+}
+
+test "Gandalf sin armas y con 11 de vida puede atravesar Lebennin"{
+    gandalf.armas().clear()
+    gandalf.vida(11)
+    assert.notThat(lebennin.puedePasar(gandalf))
+}
+
+test "Gandalf sin armas y con 11 de vida puede atravesar Minas Tirith"{
+    gandalf.armas().clear()
+    gandalf.vida(11)    
+    assert.notThat(minasTirith.puedePasar(gandalf))
+}
+
+test "Gandalf full vida y con sus armas, puede atravesar el camino compuesto por Lebennin y Minas Tirith"{
+    // YA DEFINIDO
+    assert.that(caminoDeGondor.puedePasar(gandalf))
+}
+
+test "Gandalf full vida y con sus armas, atraviesa el camino compuesto por Lebennin y Minas Tirith"{
+    // YA DEFINIDO
+    caminoDeGondor.atravesar(gandalf)
+    assert.equals(gandalf.vida(),90)
+} 
+
+//PARTE 2//
+
+test "Se requiere un item para pasar una zona, si gandalf no tiene el item, no podra" {
+    const itemRequerido = new Item()
+    const zonaTest = new ZonaRequerimientoElemento(vidaAPerder = 10, cantidadRequerida = 1, nombreElemento = itemRequerido)
+    
+    assert.notThat(zonaTest.puedePasar(gandalf))
+}
+
+test "Se requiere un item para pasar una zona, si gandalf tiene el item, podra" {
+    const itemRequerido = new Item()
+    const zonaTest = new ZonaRequerimientoElemento(vidaAPerder = 10, cantidadRequerida = 1, nombreElemento = itemRequerido)
+    
+    gandalf.agregarItem(itemRequerido)
+    assert.that(zonaTest.puedePasar(gandalf))
+  
+}
+
+
+test "Si un grupo formado por Gandalf y Tom, intenta atravesar el desierto sin tener 3 botellas de agua, no podran" {
+    const botellaDeAgua = new Item()
+
+    gandalf.agregarItem(botellaDeAgua)
+    tom.agregarItem(botellaDeAgua)
+    
+    const grupoTest = new Grupo(listaGuerreros = [gandalf, tom])
+    const desierto = new ZonaRequerimientoElemento(vidaAPerder = 10,cantidadRequerida = 3, nombreElemento = botellaDeAgua)
+
+    assert.notThat(desierto.puedePasar(grupoTest))
+}
+
+test "Si un grupo formado por Gandalf y Tom, intenta atravesar el desierto teniendo 3 botellas de agua, podran" {
+    const botellaDeAgua = new Item()
+
+    gandalf.agregarItem(botellaDeAgua)
+    tom.agregarItem(botellaDeAgua)
+    tom.agregarItem(botellaDeAgua)
+    
+    const grupoTest = new Grupo(listaGuerreros = [gandalf, tom])
+    const desierto = new ZonaRequerimientoElemento(vidaAPerder = 10,cantidadRequerida = 3, nombreElemento = botellaDeAgua)
+
+    assert.that(desierto.puedePasar(grupoTest))
+}
+
+test "Se requiere para el bosque tener mas de 2 armas, si gandalf sin armas intenta pasar, no podra" {
+    const bosque = new RequerimientoGuerrero(nombCondicion = { guerrero => guerrero.armas().size() > 2 })
+    gandalf.armas().clear()
+    assert.notThat(bosque.puedePasar(gandalf))
+}
+
+test "Se requiere para el bosque tener mas de 2 armas, si gandalf con 2 armas intenta, podra" {
+    const bosque = new RequerimientoGuerrero(nombCondicion = { guerrero => (guerrero.armas()).size() > 2 })
+     
+    //Gandalf ya tiene dos armas glamdring y baculo 
+    const espadaTest = new Espada(
+        multiplicadorDePoder = 5,
+        portador = gandalf)
+    gandalf.agregarArma(espadaTest)
+
+    assert.that(bosque.puedePasar(gandalf)) 
+}
+
+test "Si un grupo formado por Gandalf y Aragon, intenta atravesar el bosque sin estar armados, no podran" {
+    const bosque = new RequerimientoGuerrero(nombCondicion = { guerrero => guerrero.estaArmado()})
+    gandalf.armas().clear()
+    
+    const aragon = new Humano(vida = 85, limitadorPoder = 20, armas = [])
+
+    const grupoTest = new Grupo(listaGuerreros = [gandalf, aragon])
+    assert.notThat(bosque.puedePasar(grupoTest)) 
+   }
+
+test "Si un grupo formado por Gandalf y Tom, intenta atravesar el bosque estando alguno de los dos armados, podran" {
+    const bosque = new RequerimientoGuerrero(nombCondicion = { guerrero => guerrero.estaArmado()})
+    gandalf.armas().clear()
+
+    const grupoTest = new Grupo(listaGuerreros = [gandalf, tom])
+    assert.that(bosque.puedePasar(grupoTest))
+}
+
+test "Final, camino de bosque, ciudad maldita, desierto y minasTirith, si gandalf tiene armas, vida y 2 botellas de agua, no podra pasar si tom no tiene una botella" {
+    const botellaDeAgua = new Item()
+
+    const ciudadMaldita = new RequerimientoGuerrero(nombCondicion = { guerrero => guerrero.vida() > 10 })
+    const bosque = new RequerimientoGuerrero(nombCondicion = { guerrero => guerrero.estaArmado() })
+    const desierto = new ZonaRequerimientoElemento(vidaAPerder = 10 , cantidadRequerida = 3, nombreElemento = botellaDeAgua)
+    
+    const regionMortal = new Region(camino = [ciudadMaldita, bosque, desierto, minasTirith])
+    
+    gandalf.vida(61)
+    gandalf.agregarItem(botellaDeAgua)
+    gandalf.agregarItem(botellaDeAgua)
+
+    const grupoTest = new Grupo(listaGuerreros = [gandalf, tom])
+    assert.notThat(regionMortal.puedePasar(grupoTest))
+}
+
+test "Si gandalf intenta hacer lo mismo, pero solo, pasara" {
+    const botellaDeAgua = new Item()
+
+    const ciudadMaldita = new RequerimientoGuerrero(nombCondicion = { guerrero => guerrero.vida() > 10 })
+    const bosque = new RequerimientoGuerrero(nombCondicion = { guerrero => guerrero.estaArmado() })
+    const desierto = new ZonaRequerimientoElemento(vidaAPerder = 10 , cantidadRequerida = 3, nombreElemento = botellaDeAgua)
+    
+    const regionMortal = new Region(camino = [ciudadMaldita, bosque, desierto, minasTirith])
+    
+    gandalf.vida(61)
+    gandalf.agregarItem(botellaDeAgua)
+    gandalf.agregarItem(botellaDeAgua)
+    gandalf.agregarItem(botellaDeAgua)
+
+    assert.that(regionMortal.puedePasar(gandalf))
+}

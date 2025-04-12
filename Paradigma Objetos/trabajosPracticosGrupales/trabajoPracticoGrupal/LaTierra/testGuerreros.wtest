@@ -1,0 +1,84 @@
+import guerreros.*
+import arsenal.*
+import zonas.*
+
+//PARTE 1//
+test "Poder de Gandalf con toda la vida y todas sus armas"{
+    assert.equals(gandalf.poder(), 2800)
+}
+
+test "Poder de Gandalf sin armas y con 80 de vida"{
+    gandalf.armas().clear()
+    gandalf.vida(80)
+    assert.equals(gandalf.poder(), 1200)
+}
+
+test "Poder de Gandalf con 5 de vida y su báculo"{
+    gandalf.armas().clear()
+    gandalf.agregarArma(baculo)
+    gandalf.vida(5)
+    assert.equals(gandalf.poder(), 2300)
+}
+
+test "Poder de Gandalf con 30 de vida, su báculo y su espada pero versión enana"{
+    gandalf.vida(30)
+    glamdring.nuevoOrigen(new Enano(factorPoder = 2))
+    assert.equals(gandalf.poder(), 1650)
+}
+
+test "Tom puede atravesar Lebennin"{
+    assert.that(lebennin.puedePasar(tom))
+}
+
+test "Tom atraviesa el camino de Gondor"{
+    tom.recorrer(caminoDeGondor)
+    assert.equals(tom.vida(),100)
+}
+
+//PARTE 2//
+
+test "Poder de Frodo, sin items" {
+    const frodo = new Hobbit(vida = 50,items = [],armas = [])
+    assert.equals(frodo.poder(), 50)
+}
+
+test "Poder de Gimli" {
+    const hachaGimli = new Hacha(longitudMango = 70, pesoHoja = 5)
+    const gimli = new Enano(vida = 75,factorPoder = 3,armas = [])
+    gimli.armas().add(hachaGimli)
+    gimli.armas().add(hachaGimli)
+    assert.equals(gimli.poder(), 2175)
+}
+
+test "Poder de Legolas" {
+    const legolas = new Elfo(vida = 80, destrezaPropia = 1, armas = [])
+    const espadaLegolas = new Espada(portador = legolas, multiplicadorDePoder = 12)
+    legolas.armas().add(espadaLegolas)
+    assert.equals(legolas.poder(), 980)
+}
+
+test "Poder de Aragorn" {
+    const aragon = new Humano(vida = 85, limitadorPoder = 20, armas = [])
+    const dagaAragon = new Daga(portador = aragon, multiplicadorDePoder = 10)
+    const anduril = new Espada(portador = aragon, multiplicadorDePoder = 18)
+    aragon.armas().add(dagaAragon)
+    aragon.armas().add(anduril)
+    assert.equals(aragon.poder(), 102.25)
+}
+
+test "Poder de Gandalf" {
+    assert.equals(gandalf.poder(), 2800)
+}
+
+test "Gandalf con 9 de vida, y todas sus armas" {
+    gandalf.vida(9)
+    assert.equals(gandalf.poder(), 4000)
+}
+
+test "Poder de Legolas que obtiene medio punto de destreza propia" {
+    const legolas = new Elfo(vida = 80, destrezaPropia = 1, armas = [])
+    const espadaLegolas = new Espada(portador = legolas, multiplicadorDePoder = 12)
+    legolas.armas().add(espadaLegolas)
+    legolas.destrezaPropia(0.5)
+    assert.equals(legolas.poder(), 830)
+}

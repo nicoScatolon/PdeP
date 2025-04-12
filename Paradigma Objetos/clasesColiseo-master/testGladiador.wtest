@@ -1,0 +1,81 @@
+//import gladiador.*
+import gladiadorHerencia.*
+import armas.*
+
+describe "test" {
+	var dima
+	var mirmi
+	var grupo
+	
+	method crearMirmiConHacha(){
+		const hacha = new ArmaFilosa(longitud = 2, filo = 1)
+		return new Mirmillon(fuerza = 20, arma = hacha, armadura = escudo)
+	}
+	method crearDimaConMartillos(){
+		dima = new Dimachaerus(destreza = 10) 
+		dima.arma(new ArmaContundente(peso = 10))
+		dima.arma(new ArmaContundente(peso = 20))
+		return dima
+	}
+	
+	method crearMirmiConCasco(){
+		return new Mirmillon(fuerza = 20, arma = new ArmaContundente(peso =20), armadura = casco)
+	}
+	
+	method crearDimaMuyArmado(){
+		dima = new Dimachaerus(destreza = 10) 
+		10.times{dima.arma(new ArmaFilosa(longitud = 3, filo = 2))}
+		return dima
+	}
+
+
+test "un Mirmillon con hacha y escudo tiene poderAtaque 22" {
+	mirmi = self.crearMirmiConHacha()
+	assert.equals(22, mirmi.poderAtaque())
+}
+
+test "un Mirmillon con hacha y escudo tiene defensa 26.5" {
+	mirmi = self.crearMirmiConHacha()
+	assert.equals(26.5, mirmi.defensa())
+}
+
+test "un Dimachearus con 2 armas contundentes de peso 10 y 20 tiene poderAtaque 40" {
+	dima = self.crearDimaConMartillos()
+	assert.equals(40, dima.poderAtaque())
+}
+test "un Dimachearus con destreza 10 tiene defensa 5" {
+	dima = self.crearDimaConMartillos()
+	assert.equals(5, dima.defensa())
+}
+
+test "un Mirmillon con hacha y escudo ataca a un demicherius con destreza 10 y este queda con 83 vida"
+{
+	mirmi = self.crearMirmiConHacha()
+	dima = self.crearDimaConMartillos()
+	mirmi.atacar(dima)
+	assert.equals(83, dima.vida())
+}
+
+test "el grupo que arma un mirmillon y un dimachaerus se llama mirmillolandia" {
+	mirmi = self.crearMirmiConHacha()
+	dima = self.crearDimaConMartillos()
+	grupo = mirmi.armarGrupoCon(dima)
+	assert.equals("Mirmillolandia", grupo.nombre())
+}
+
+test "el grupo que arma un dimachaerus y un mirmillon se llama D-62" {
+	mirmi = self.crearMirmiConHacha()
+	dima = self.crearDimaConMartillos()
+	grupo = dima.armarGrupoCon(mirmi)
+	assert.equals("D-62", grupo.nombre())
+}
+
+test "el mas fuerte del grupo es el dimachaerus" {
+	mirmi = self.crearMirmiConHacha()
+	dima = self.crearDimaConMartillos()
+	grupo = dima.armarGrupoCon(mirmi)
+	assert.equals(dima, grupo.masFuerte())
+}
+
+
+}
